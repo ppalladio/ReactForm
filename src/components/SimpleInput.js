@@ -11,32 +11,33 @@ const SimpleInput = (props) => {
     // const [enteredNameIsValid, setEnteredNameIsValid] = useState(false);
     const [enteredNameTouched, setEnteredNameTouched] = useState(false);
 
-
     const enteredNameIsValid = enteredName.trim() !== '';
     const nameInputIsInvalid = !enteredNameIsValid && enteredNameTouched; //# only when user tried to inout and the input is invalid, then we can say the name input is invalid
 
+    let formIsValid = false;
+    if (enteredNameIsValid) {
+        formIsValid = true;
+    }
     const nameInputHandler = (e) => {
         setEnteredName(e.target.value);
     };
 
     const lostFocusHandler = (e) => {
         setEnteredNameTouched(true);
-
     };
 
     const formSubmissionHandler = (e) => {
         e.preventDefault();
         setEnteredNameTouched(true);
         if (!enteredNameIsValid) {
-           return
+            return;
         }
 
         // const enteredValue = nameInputRef.current.value;//' if we are using useRef
         // console.log(enteredValue);//' if we are using useRef
         setEnteredName(''); //.if we are clearing the input field
-        setEnteredNameTouched(false); 
+        setEnteredNameTouched(false);
     };
-
 
     const nameInputClasses = nameInputIsInvalid
         ? 'form-control invalid'
@@ -59,7 +60,7 @@ const SimpleInput = (props) => {
                 <p className="error-text">'must enter a valid name'</p>
             )}
             <div className="form-actions">
-                <button>Submit</button>
+                <button disabled={!formIsValid}>Submit</button>
             </div>
         </form>
     );
