@@ -15,12 +15,18 @@ const SimpleInput = (props) => {
         setEnteredName(e.target.value);
     };
 
+    const lostFocusHandler = (e) => {
+        setEnteredNameTouched(true);
+        if (e.target.value.trim() !== '') {
+            setEnteredNameIsValid(true);
+        }
+    };
+
     const formSubmissionHandler = (e) => {
         e.preventDefault();
         setEnteredNameTouched(true);
-        if (enteredName.trim() === '') {
+        if (e.target.value.trim() === '') {
             setEnteredNameIsValid(false);
-            return;
         }
         setEnteredNameIsValid(true);
         console.log(enteredName);
@@ -35,7 +41,6 @@ const SimpleInput = (props) => {
         ? 'form-control invalid'
         : 'form-control';
 
-
     return (
         <form onSubmit={formSubmissionHandler}>
             <div className={nameInputClasses}>
@@ -46,6 +51,7 @@ const SimpleInput = (props) => {
                     id="name"
                     onChange={nameInputHandler}
                     value={enteredName} //.if we are clearing the input field 'twoway binding'
+                    onBlur={lostFocusHandler}
                 />
             </div>
             {nameInputIsInvalid && (
