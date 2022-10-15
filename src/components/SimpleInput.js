@@ -8,22 +8,32 @@ const SimpleInput = (props) => {
      */
     // const nameInputRef = useRef();//' if we are using useRef
     const [enteredName, setEnteredName] = useState('');
+    const [enteredEmail, setEnteredEmail] = useState('');
     // const [enteredNameIsValid, setEnteredNameIsValid] = useState(false);
     const [enteredNameTouched, setEnteredNameTouched] = useState(false);
-
+    const [enteredEmailTouched, setEnteredEmailTouched] = useState(false);
     const enteredNameIsValid = enteredName.trim() !== '';
     const nameInputIsInvalid = !enteredNameIsValid && enteredNameTouched; //# only when user tried to inout and the input is invalid, then we can say the name input is invalid
+    const enteredEmailIsValid = enteredEmail.includes('@');
+    const emailInputIsInvalid = !enteredEmailIsValid && enteredEmailTouched;
 
     let formIsValid = false;
-    if (enteredNameIsValid) {
+    if (enteredNameIsValid && enteredEmailIsValid) {
         formIsValid = true;
     }
     const nameInputHandler = (e) => {
         setEnteredName(e.target.value);
     };
 
+    const emailInputChangeHandler = (e) => {
+        setEnteredEmail(e.target.value);
+    };
     const lostFocusHandler = (e) => {
         setEnteredNameTouched(true);
+    };
+
+    const lostFocustHandlerEmail = (e) => {
+        setEnteredEmailTouched(true);
     };
 
     const formSubmissionHandler = (e) => {
@@ -37,12 +47,18 @@ const SimpleInput = (props) => {
         // console.log(enteredValue);//' if we are using useRef
         setEnteredName(''); //.if we are clearing the input field
         setEnteredNameTouched(false);
+
+        setEnteredEmail('');
+        setEnteredEmailTouched(false);
     };
 
     const nameInputClasses = nameInputIsInvalid
         ? 'form-control invalid'
         : 'form-control';
 
+    const emailInputClasses = emailInputIsInvalid
+        ? 'form-control invalid'
+        : 'form-control';
     return (
         <form onSubmit={formSubmissionHandler}>
             <div className={nameInputClasses}>
@@ -56,8 +72,25 @@ const SimpleInput = (props) => {
                     onBlur={lostFocusHandler}
                 />
             </div>
-            {nameInputIsInvalid && (
-                <p className="error-text">'must enter a valid name'</p>
+            <div>
+                {emailInputIsInvalid && (
+                    <p className="error-text">must enter a valid name</p>
+                )}
+            </div>
+            {/* //.email */}
+            <div className={emailInputClasses}>
+                <label htmlFor="name">Your Email</label>
+                <input
+                    // ref={nameInputRef} //' if we are using useRef
+                    type="email"
+                    id="email"
+                    onChange={emailInputChangeHandler}
+                    value={enteredEmail} //.if we are clearing the input field 'twoway binding'
+                    onBlur={lostFocustHandlerEmail}
+                />
+            </div>
+            {emailInputIsInvalid && (
+                <p className="error-text">must enter a valid email address</p>
             )}
             <div className="form-actions">
                 <button disabled={!formIsValid}>Submit</button>
