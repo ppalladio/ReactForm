@@ -14,11 +14,17 @@ const useInput = (validateValue) => {
     const lostFocusHandler = (e) => {
         setIsTouched(true);
     };
+    const resetFunc =()=>{
+        setEnteredValue('')
+        setIsTouched(false)
+    }
     return {
         value: enteredValue,
+        isValid:valueIsValid,
         hasError: hasError,
         valueChangeHandler,
         lostFocusHandler,
+        resetFunc
     };
 };
 
