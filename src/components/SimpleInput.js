@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+// import { useState, useRef } from 'react';
 import useInput from '../hooks/use-input';
 const SimpleInput = (props) => {
     /**
@@ -16,26 +16,30 @@ const SimpleInput = (props) => {
         lostFocusHandler: nameLostFocusHandler,
         resetFunc: resetNameInput,
     } = useInput((value) => value.trim() !== ''); //.we need a functin input
-    const [enteredEmail, setEnteredEmail] = useState('');
+
+
+    const {
+        value: enteredEmail,
+        hasError: emailInputError,
+        isValid: enteredEmailIsValid,
+        valueChangeHandler: emailInputHandler,
+        lostFocusHandler: emailLostFocustHandler,
+        resetFunc:resetEmailInput,
+    }=useInput((value)=> value.includes('@'))
+    // const [enteredEmail, setEnteredEmail] = useState('');
     // const [enteredNameIsValid, setEnteredNameIsValid] = useState(false);
-    const [enteredEmailTouched, setEnteredEmailTouched] = useState(false);
+    // const [enteredEmailTouched, setEnteredEmailTouched] = useState(false);
     // const enteredNameIsValid = enteredName.trim() !== '';
     // const nameInputIsInvalid = !enteredNameIsValid && enteredNameTouched; //# only when user tried to inout and the input is invalid, then we can say the name input is invalid
-    const enteredEmailIsValid = enteredEmail.includes('@');
-    const emailInputIsInvalid = !enteredEmailIsValid && enteredEmailTouched;
+    // const enteredEmailIsValid = enteredEmail.includes('@');
+    // const emailInputIsInvalid = !enteredEmailIsValid && enteredEmailTouched;
 
     let formIsValid = false;
     if (enteredNameIsValid && enteredEmailIsValid) {
         formIsValid = true;
     }
 
-    const emailInputChangeHandler = (e) => {
-        setEnteredEmail(e.target.value);
-    };
 
-    const lostFocustHandlerEmail = (e) => {
-        setEnteredEmailTouched(true);
-    };
 
     const formSubmissionHandler = (e) => {
         e.preventDefault();
@@ -48,17 +52,18 @@ const SimpleInput = (props) => {
         // setEnteredName(''); //.if we are clearing the input field
         // setEnteredNameTouched(false);
         resetNameInput();
-        setEnteredEmail('');
-        setEnteredEmailTouched(false);
+        resetEmailInput();
     };
 
     const nameInputClasses = nameInputError
         ? 'form-control invalid'
         : 'form-control';
 
-    const emailInputClasses = emailInputIsInvalid
+    const emailInputClasses = emailInputError
         ? 'form-control invalid'
         : 'form-control';
+
+
     return (
         <form onSubmit={formSubmissionHandler}>
             <div className={nameInputClasses}>
@@ -83,12 +88,12 @@ const SimpleInput = (props) => {
                     // ref={nameInputRef} //' if we are using useRef
                     type="email"
                     id="email"
-                    onChange={emailInputChangeHandler}
+                    onChange={emailInputHandler}
                     value={enteredEmail} //.if we are clearing the input field 'twoway binding'
-                    onBlur={lostFocustHandlerEmail}
+                    onBlur={emailLostFocustHandler}
                 />
             </div>
-            {emailInputIsInvalid && (
+            {emailInputError && (
                 <p className="error-text">must enter a valid email address</p>
             )}
             <div className="form-actions">
