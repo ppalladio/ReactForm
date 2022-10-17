@@ -17,15 +17,14 @@ const SimpleInput = (props) => {
         resetFunc: resetNameInput,
     } = useInput((value) => value.trim() !== ''); //.we need a functin input
 
-
     const {
         value: enteredEmail,
         hasError: emailInputError,
         isValid: enteredEmailIsValid,
         valueChangeHandler: emailInputHandler,
         lostFocusHandler: emailLostFocustHandler,
-        resetFunc:resetEmailInput,
-    }=useInput((value)=> value.includes('@'))
+        resetFunc: resetEmailInput,
+    } = useInput((value) => value.includes('@'));
     // const [enteredEmail, setEnteredEmail] = useState('');
     // const [enteredNameIsValid, setEnteredNameIsValid] = useState(false);
     // const [enteredEmailTouched, setEnteredEmailTouched] = useState(false);
@@ -38,8 +37,6 @@ const SimpleInput = (props) => {
     if (enteredNameIsValid && enteredEmailIsValid) {
         formIsValid = true;
     }
-
-
 
     const formSubmissionHandler = (e) => {
         e.preventDefault();
@@ -62,7 +59,6 @@ const SimpleInput = (props) => {
     const emailInputClasses = emailInputError
         ? 'form-control invalid'
         : 'form-control';
-
 
     return (
         <form onSubmit={formSubmissionHandler}>
